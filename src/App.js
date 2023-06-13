@@ -1,25 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+  // import
+  import React, { useState } from "react"
+  import mockUsers from "./mockUsers"
+  import mockApts from "./mockApts"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+  // declare functional component
+  const App = () => {
+    
+    const [currentUser, setCurrentUser] = useState(mockUsers[0])
+    const [apartments, setApartments] = useState(mockApts)
 
-export default App;
+    return(
+      <>
+        <h1>Apartment Front End</h1>
+      </>
+    )
+  }
+  // export
+  export default App
