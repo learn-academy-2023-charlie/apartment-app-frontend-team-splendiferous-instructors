@@ -1,7 +1,7 @@
 // import
 import React from "react"
 // declare functional component
-const ApartmentNew = () => {
+const ApartmentNew = ({createApt}) => {
   return(
     <>
       <h3>ApartmentNew page</h3>
