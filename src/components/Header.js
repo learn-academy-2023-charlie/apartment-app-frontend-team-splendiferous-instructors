@@ -3,7 +3,9 @@ import React from "react"
 import headerLogo from "../assets/headerLogo.png"
 import { Navbar, NavbarBrand, Nav, NavItem, NavLink } from "reactstrap"
 // declare functional component
-const Header = () => {
+const Header = ({currentUser}) => {
+  console.log("currentUser prop:", currentUser)
+
   return(
     <Navbar
       className="my-2"
@@ -24,6 +26,30 @@ const Header = () => {
         <NavItem>
           <NavLink href="/aptindex">Available Units</NavLink>
         </NavItem>
+        <NavItem>
+          <NavLink href="/myapts">Your Units</NavLink>
+        </NavItem>
+      </Nav>
+      <Nav className="nav">
+        {currentUser && (
+          <NavItem>
+            <input type="button" value='Logout' />
+          </NavItem>
+        )}
+        {!currentUser && (
+          <>
+            <NavItem>
+              <NavLink to="/login" className="nav-link">
+                Log In
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink to="/signup" className="nav-link">
+                Sign Up
+              </NavLink>
+            </NavItem>
+          </>
+        )}
       </Nav>
     </Navbar>
   )

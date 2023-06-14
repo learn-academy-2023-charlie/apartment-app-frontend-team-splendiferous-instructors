@@ -31,14 +31,25 @@ const App = () => {
 
   return(
     <>
-      <Header />
+      <Header currentUser={currentUser} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/aptindex" element={<ApartmentIndex apartments={apartments}/>} />
         <Route path="/aptshow/:id" element={<ApartmentShow apartments={apartments}/>} />
-        <Route path="/myapts" element={<ApartmentProtectedIndex />} />
+        {currentUser && (
+          <Route 
+            path="/myapts" 
+            element={
+              <ApartmentProtectedIndex 
+                currentUser={currentUser}
+                apartments={apartments}
+              />
+            } 
+          />
+        )}
+
         <Route path="/aptnew" element={<ApartmentNew createApt={createApt} />} />
         <Route path="/aptedit" element={<ApartmentEdit />} />
         <Route path="*" element={<NotFound />} />

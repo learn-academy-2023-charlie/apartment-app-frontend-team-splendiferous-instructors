@@ -242,3 +242,64 @@ const ApartmentNew = ({ createCat }) => {
     createApt(newApt)
   }
 ```
+
+## Protected Pages
+## Header
+- links will be on the Header.js
+- conditional rendering: under a true condition, certain links will be available  
+`{currentUser && ()}`
+- pass user prop to Header.js
+- non-users will see: ApartmentIndex, LogIn, SignUp
+- users: ApartmentIndex, ApartmentProtectedIndex, LogOut
+```js
+// Header.js
+  <Nav className="nav">
+    {currentUser && (
+      <NavItem>
+        <input type="button" value='Logout' />
+      </NavItem>
+    )}
+    {!currentUser && (
+      <>
+        <NavItem>
+          <NavLink to="/login" className="nav-link">
+            Log In
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink to="/signup" className="nav-link">
+            Sign Up
+          </NavLink>
+        </NavItem>
+      </>
+    )}
+  </Nav>
+```
+
+## ApartmentProtectedIndex
+- need to set a condition that a user can see all the apartments associated with that user's id
+```js
+  // ApartmentProtectedIndex.js
+// use the filter method to create a new array of apartments belonging to the user by comparing if the primary key of the user is strictly equal to the foreign key of the apartment.
+  const myApartments = apartments?.filter(apartment => currentUser?.id === apartment.user_id)
+```
+
+- will use later on edit page
+```js
+const [currentApt, setCurrentApt] = useState(
+    {
+      street: currentApt.street,
+      unit: currentApt.unit,
+      city: currentApt.city,
+      state: currentApt.state,
+      square_footage: currentApt.square_footage,
+      price: currentApt.price,
+      bedrooms: currentApt.bedrooms,
+      bathrooms: currentApt.bathrooms,
+      pets: currentApt.pets,
+      image: currentApt.image,
+      user_id: currentUser.id
+    }
+  )
+  ```
+
