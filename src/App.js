@@ -25,6 +25,10 @@ const App = () => {
   const [currentUser, setCurrentUser] = useState(mockUsers[0])
   const [apartments, setApartments] = useState(mockApts)
 
+  const createApt = (apt) => {
+    console.log("created apartment:", apt)
+  }
+
   return(
     <>
       <Header />
@@ -35,7 +39,7 @@ const App = () => {
         <Route path="/aptindex" element={<ApartmentIndex apartments={apartments}/>} />
         <Route path="/aptshow/:id" element={<ApartmentShow apartments={apartments}/>} />
         <Route path="/myapts" element={<ApartmentProtectedIndex />} />
-        <Route path="/aptnew" element={<ApartmentNew />} />
+        <Route path="/aptnew" element={<ApartmentNew createApt={createApt} />} />
         <Route path="/aptedit" element={<ApartmentEdit />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
