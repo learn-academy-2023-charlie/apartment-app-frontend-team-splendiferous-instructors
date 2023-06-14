@@ -26,3 +26,30 @@ Process:
   // export
   export default App
 ```
+
+## React Components
+- Components folder: Header, Footer, SignUp, LogIn, 
+- Pages: Home, ApartmentIndex, ApartmentShow, ApartmentProtectedIndex, ApartmentNew, ApartmentEdit, NotFound
+
+## Routing Components
+- `import { Routes, Route } from "react-router-dom"`
+- The path assigned for the LogIn and SignUp will match the devise pathname. 
+```js
+  return (
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<LogIn />} />
+        <Route path="/aptindex" element={<ApartmentIndex />} />
+        <Route path="/aptshow" element={<ApartmentShow />} />
+        <Route path="/myapts" element={<ApartmentProtectedIndex />} />
+        <Route path="/aptnew" element={<ApartmentNew />} />
+        <Route path="/aptedit" element={<ApartmentEdit />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      <Footer />
+    </>
+  )
+```
