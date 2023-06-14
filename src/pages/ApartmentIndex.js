@@ -1,10 +1,32 @@
 // import
 import React from "react"
+import { Card, CardGroup, CardImg, CardBody, CardTitle, Button } from "reactstrap"
 // declare functional component
-const ApartmentIndex = () => {
+const ApartmentIndex = ({apartments}) => {
   return(
     <>
-      <h3>ApartmentIndex page</h3>
+      <CardGroup>
+        {apartments?.map((apt, index) => {
+          return(
+            <Card key={index}>
+              <CardImg
+                alt="a space you need to experience"
+                src={apt.image}
+                top
+                width="100%"
+              />
+              <CardBody>
+                <CardTitle tag="h5">
+                  Located in {apt.state}
+                </CardTitle>
+                <Button>
+                  More Details
+                </Button>
+              </CardBody>
+            </Card>
+          )
+        })}
+      </CardGroup>
     </>
   )
 }

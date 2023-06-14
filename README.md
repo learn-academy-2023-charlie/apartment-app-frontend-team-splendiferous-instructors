@@ -130,3 +130,161 @@ Process:
     })
   })
 ```
+
+## Apartment Index
+- https://github.com/learn-academy-2023-charlie/syllabus/blob/main/cat-tinder/frontend/cat-read.md
+
+- send props to component call
+- accept props on component
+- iterate across values in the apartment array to display the image and state for each value on a separate card
+```js
+  import React from "react"
+
+  const ApartmentIndex = ({ apartments }) => {
+    return (
+      <main>
+        {apartments.map((apartment, index) => {
+          return (
+            <>
+              <CardGroup key={index}>
+                <Card>
+                  <CardImg
+                    alt="a space you need to experience"
+                    src={apartment.image}
+                    top
+                    width="100%"
+                  />
+                  <CardBody>
+                    <CardTitle tag="h5">
+                      Located in {apartment.state}
+                    </CardTitle>
+                    <Button>
+                      More Details
+                    </Button>
+                  </CardBody>
+                </Card>
+              <CardGroup>
+            </>
+          )
+        })}
+      </main>
+    )
+  }
+
+  export default ApartmentIndex
+```
+
+## Show
+- modify path to have a param
+```js
+const { id } = useParams()
+let currentApt = apartments?.find((apt) => apt.id === +id)
+
+return (
+  <main>
+    {currentApt && (
+      <>
+        <Card>
+          <CardImg
+            alt="a space you need to experience"
+            src={currentApt.image}
+            top
+            width="100%"
+          />
+          <CardBody>
+            <CardTitle tag="h5">
+              Located in {currentApt.state}
+            </CardTitle>
+            <CardSubtitle
+              className="mb-2 text-muted"
+              tag="h6"
+            >
+              {currentApt.street} {currentApt.unit},{currentApt.city}, {currentApt.state}
+            </CardSubtitle>
+            <CardText>
+              {currentApt.square_footage} that includes {currentApt.bedrooms} bedrooms and {currentApt.bathrooms} bathrooms going for {currentApt.price}
+            </CardText>
+          </CardBody>
+        </Card>
+      </>
+    )}
+  </main>
+)
+```
+<CardGroup>
+  <Card>
+    <CardImg
+      alt="Card image cap"
+      src="https://picsum.photos/318/180"
+      top
+      width="100%"
+    />
+    <CardBody>
+      <CardTitle tag="h5">
+        Card title
+      </CardTitle>
+      <CardSubtitle
+        className="mb-2 text-muted"
+        tag="h6"
+      >
+        Card subtitle
+      </CardSubtitle>
+      <CardText>
+        This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+      </CardText>
+      <Button>
+        Button
+      </Button>
+    </CardBody>
+  </Card>
+  <Card>
+    <CardImg
+      alt="Card image cap"
+      src="https://picsum.photos/318/180"
+      top
+      width="100%"
+    />
+    <CardBody>
+      <CardTitle tag="h5">
+        Card title
+      </CardTitle>
+      <CardSubtitle
+        className="mb-2 text-muted"
+        tag="h6"
+      >
+        Card subtitle
+      </CardSubtitle>
+      <CardText>
+        This card has supporting text below as a natural lead-in to additional content.
+      </CardText>
+      <Button>
+        Button
+      </Button>
+    </CardBody>
+  </Card>
+  <Card>
+    <CardImg
+      alt="Card image cap"
+      src="https://picsum.photos/318/180"
+      top
+      width="100%"
+    />
+    <CardBody>
+      <CardTitle tag="h5">
+        Card title
+      </CardTitle>
+      <CardSubtitle
+        className="mb-2 text-muted"
+        tag="h6"
+      >
+        Card subtitle
+      </CardSubtitle>
+      <CardText>
+        This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.
+      </CardText>
+      <Button>
+        Button
+      </Button>
+    </CardBody>
+  </Card>
+</CardGroup>

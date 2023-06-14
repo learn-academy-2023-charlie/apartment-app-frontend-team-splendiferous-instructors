@@ -32,8 +32,8 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<LogIn />} />
-        <Route path="/aptindex" element={<ApartmentIndex />} />
-        <Route path="/aptshow" element={<ApartmentShow />} />
+        <Route path="/aptindex" element={<ApartmentIndex apartments={apartments}/>} />
+        <Route path="/aptshow/:id" element={<ApartmentShow apartments={apartments}/>} />
         <Route path="/myapts" element={<ApartmentProtectedIndex />} />
         <Route path="/aptnew" element={<ApartmentNew />} />
         <Route path="/aptedit" element={<ApartmentEdit />} />
