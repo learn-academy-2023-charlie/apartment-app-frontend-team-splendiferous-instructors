@@ -1,6 +1,7 @@
 // import
 import React, { useState } from "react"
 import { Routes, Route } from "react-router-dom"
+import "./App.css"
 // mock data
 import mockUsers from "./mockUsers"
 import mockApts from "./mockApts"

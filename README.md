@@ -53,3 +53,80 @@ Process:
     </>
   )
 ```
+
+## Header
+- design header logo
+- fav icon: favicon.ico
+- browser tab title
+- Links: All Apartments, Home link on logo 
+*** Based on user status ***
+- Conditional Rendering: My Apartments, Sign Up, Log In
+- Styling: [Reactstrap](eactstrap.github.io)
+- Testing references: [Cat Tinder Testing](https://github.com/learn-academy-2023-charlie/syllabus/blob/main/cat-tinder/frontend/cat-testing.md), [React Testing Library](https://testing-library.com/docs/queries/about/#debugging)
+
+### NavBar for Header
+```js
+  <Navbar
+    className="my-2"
+    color="light"
+  >
+    <NavbarBrand href="/">
+      <img
+        alt="logo"
+        src={headerLogo}
+        style={{
+          height: 20,
+          width: 40
+        }}
+      />
+      Vacancy 4 Currency
+    </NavbarBrand>
+    <Nav className="me-auto" navbar>
+      <NavItem>
+        <NavLink href="/aptindex">Available Units</NavLink>
+      </NavItem>
+    </Nav>
+  </Navbar>
+```
+
+## Footer
+- [bootstrap](https://getbootstrap.com/docs/5.3/components/navbar/#placement)
+```js
+  <nav class="navbar sticky-bottom bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">&copy; Splendiferous Charlie 2023</a>
+    </div>
+  </nav>
+```
+
+## Testing
+```js
+  import { render, screen } from '@testing-library/react';
+  import App from '../App';
+  import { BrowserRouter } from 'react-router-dom'
+
+  describe("<App />", () => {
+    beforeEach(() => {
+      render(
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      )
+    })
+    // ensures react component renders
+    it('renders without crashing', () => {})
+
+    // testing an element of the UI
+    it('renders home link on logo', () => {
+      // debugging tool
+      screen.logTestingPlaygroundURL()
+      // query
+      const linkElement = screen.getByRole('link', {
+        name: /vacancy 4 currency/i
+      })
+      // assertion
+      expect(linkElement).toBeInTheDocument()
+      expect(linkElement).toHaveTextContent("Vacancy 4 Currency")
+    })
+  })
+```
