@@ -380,7 +380,7 @@ const ApartmentNew = ({ createApt, currentUser }) => {
       method: 'POST'
     })
       .then(response => {
-        if (!response.ok) {
+        if(!response.ok) {
           throw Error(response.statusText)
         }
         // store the token
@@ -395,7 +395,7 @@ const ApartmentNew = ({ createApt, currentUser }) => {
 ```
 - pass prop
 ```javascript
-  <Route path="/login" element={<Login login={login} />} />
+  <Route path="/login" element={<LogIn login={login} />} />
 ```
 ```js
 // login.js

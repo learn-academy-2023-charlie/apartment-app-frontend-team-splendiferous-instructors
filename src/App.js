@@ -1,5 +1,5 @@
 // import
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Routes, Route } from "react-router-dom"
 import "./App.css"
 // mock data
@@ -22,11 +22,58 @@ import NotFound from "./pages/NotFound"
 // declare functional component
 const App = () => {
   
-  const [currentUser, setCurrentUser] = useState(mockUsers[0])
-  const [apartments, setApartments] = useState(mockApts)
+  const [currentUser, setCurrentUser] = useState(null)
+  const [apartments, setApartments] = useState([])
+
+  const url = "http://localhost:3000"
+
+  useEffect(() => {
+    readApts()
+  }, [])
+
+  const readApts = () => {
+    fetch(`${url}/apartments`)
+      .then(response => response.json())
+      .then(payload => {
+        setApartments(payload)
+      })
+      .catch((error) => console.log(error))
+  }
 
   const createApt = (apt) => {
-    console.log("created apartment:", apt)
+    fetch(`${url}/apartments`, {
+      body: JSON.stringify(apt),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: "POST"
+    })
+      .then((response) => response.json())
+      .then((payload) => readApts())
+      .catch((errors) => console.log("Apartment create errors:", errors))
+  }
+
+  const login = (userInfo) => {
+    fetch(`${url}/login`, {
+      body: JSON.stringify(userInfo),
+      headers: {
+        "Content-Type": 'application/json',
+        "Accept": 'application/json'
+      },
+      method: 'POST'
+    })
+      .then(response => {
+        if(!response.ok) {
+          throw Error(response.statusText)
+        }
+        // store the token
+        localStorage.setItem("token", response.headers.get("Authorization"))
+        return response.json()
+      })
+      .then(payload => {
+        setCurrentUser(payload)
+      })
+      .catch(error => console.log("login errors: ", error))
   }
 
   return(
@@ -35,7 +82,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/login" element={<LogIn />} />
+        <Route path="/login" element={<LogIn login={login}/>} />
         <Route path="/aptindex" element={<ApartmentIndex apartments={apartments}/>} />
         <Route path="/aptshow/:id" element={<ApartmentShow apartments={apartments}/>} />
         {currentUser && (
