@@ -26,25 +26,30 @@ const Header = ({currentUser}) => {
         <NavItem>
           <NavLink href="/aptindex">Available Units</NavLink>
         </NavItem>
-        <NavItem>
-          <NavLink href="/myapts">Your Units</NavLink>
-        </NavItem>
       </Nav>
       <Nav className="nav">
         {currentUser && (
-          <NavItem>
-            <input type="button" value='Logout' />
-          </NavItem>
+          <>
+            <NavItem>
+              <NavLink href="/myapts">Your Units</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/aptnew">Add a Unit</NavLink>
+            </NavItem>
+            <NavItem>
+              <input type="button" value="Log Out" />
+            </NavItem>
+          </>
         )}
         {!currentUser && (
           <>
             <NavItem>
-              <NavLink to="/login" className="nav-link">
+              <NavLink href="/login" className="nav-link">
                 Log In
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink to="/signup" className="nav-link">
+              <NavLink href="/signup" className="nav-link">
                 Sign Up
               </NavLink>
             </NavItem>

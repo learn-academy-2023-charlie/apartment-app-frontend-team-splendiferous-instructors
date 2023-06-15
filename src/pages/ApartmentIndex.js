@@ -1,6 +1,6 @@
 // import
 import React from "react"
-import { Card, CardGroup, CardImg, CardBody, CardTitle, Button } from "reactstrap"
+import { Card, CardGroup, CardImg, CardBody, CardTitle, Button, NavLink } from "reactstrap"
 // declare functional component
 const ApartmentIndex = ({apartments}) => {
   return(
@@ -20,7 +20,9 @@ const ApartmentIndex = ({apartments}) => {
                   Located in {apt.state}
                 </CardTitle>
                 <Button>
-                  More Details
+                  <NavLink href={`/aptshow/${apt.id}`}>
+                    More Details
+                  </NavLink>
                 </Button>
               </CardBody>
             </Card>
