@@ -320,4 +320,245 @@ const ApartmentNew = ({ createApt, currentUser }) => {
   const myApartments = apartments?.filter(apartment => currentUser?.id === apartment.user_id)
 ```
 
+## CONNECTING
+
+## Read/Create functionality
+- 2 servers for API and UI
+- set state variables to null/empty
+- verify proper output on browser
+
+### Read/Create Fetch
+```js
+// import useEffect
+// will store the url in a variable
+  const [currentUser, setCurrentUser] = useState(null)
+  const [apartments, setApartments] = useState([])
+
+  const url = "http://localhost:3000"
+
+  useEffect(() => {
+    readApts()
+  }, [])
+
+  // apartment fetches
+  const readApts = () => {
+    fetch(`${url}/apartments`)
+      .then(response => response.json())
+      .then(payload => {
+        setApartments(payload)
+      })
+      .catch((error) => console.log(error))
+  }
+
+  const createApt = (apt) => {
+    fetch(`${url}/apartments`, {
+      body: JSON.stringify(apt),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: "POST"
+    })
+      .then((response) => response.json())
+      .then((payload) => readApts())
+      .catch((errors) => console.log("Apartment create errors:", errors))
+  }
+```
+- check server
+
+## LogIn
+- 
+```js
+// App.js
+  // authentication function
+  const login = (userInfo) => {
+    fetch(`${url}/login`, {
+      body: JSON.stringify(userInfo),
+      headers: {
+        "Content-Type": 'application/json',
+        "Accept": 'application/json'
+      },
+      method: 'POST'
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw Error(response.statusText)
+        }
+        // store the token
+        localStorage.setItem("token", response.headers.get("Authorization"))
+        return response.json()
+      })
+      .then(payload => {
+        setCurrentUser(payload)
+      })
+      .catch(error => console.log("login errors: ", error))
+  }
+```
+- pass prop
+```javascript
+  <Route path="/login" element={<Login login={login} />} />
+```
+```js
+// login.js
+// Use useRef to track DOM elements and access them in our code. With useRef, we can create a reference to our signup and login forms
+import { useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
+
+const LogIn = ({ login }) => {
+
+  const formRef = useRef()
+  const navigate = useNavigate()
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const formData = new FormData(formRef.current)
+    const data = Object.fromEntries(formData)
+    const userInfo = {
+        "user": { email: data.email, password: data.password }
+    }
+    console.log(userInfo)
+    login(userInfo)
+    navigate('/')
+    e.target.reset()
+  }
+
+  return(
+    <div>
+      <form ref={formRef} onSubmit={handleSubmit}>
+        Email: <input type="email" name='email' placeholder="email" />
+        <br/>
+        Password: <input type="password" name='password' placeholder="password" />
+        <br/>
+        <input type='submit' value="Login" />
+      </form>
+      <br />
+      <div>Not registered yet, <a href="/signup">Signup</a> </div>
+    </div>
+  )
+}
+export default Login
+```
+
+## Sign Up
+```js
+// App.js
+const signup = (userInfo) => {
+  fetch(`${url}/signup`, {
+    body: JSON.stringify(userInfo),
+    headers: {
+      "Content-Type": 'application/json',
+      "Accept": 'application/json'
+    },
+    method: 'POST'
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw Error(response.statusText)
+      }
+      // store the token
+      localStorage.setItem("token", response.headers.get("Authorization"))
+      return response.json()
+    })
+    .then(payload => {
+      setCurrentUser(payload)
+    })
+    .catch(error => console.log("login errors: ", error))
+}
+```
+- pass prop
+```js
+  <Route path="/signup" element={<SignUp signup={signup}/>} />
+```
+```js
+  // signup
+  import { useRef } from "react"
+  import { useNavigate } from "react-router-dom"
+
+  const Signup = ({ signup }) => {
+    const formRef = useRef()
+    const navigate = useNavigate()
+
+    const handleSubmit = (e) => {
+      e.preventDefault()
+      const formData = new FormData(formRef.current)
+      const data = Object.fromEntries(formData)
+      const userInfo = {
+        user: { email: data.email, password: data.password },
+      }
+      signup(userInfo)
+      navigate("/")
+      e.target.reset()
+    }
+    return (
+      <div>
+        <form ref={formRef} onSubmit={handleSubmit}>
+          Email: <input type="email" name="email" placeholder="email" />
+          <br />
+          Password:{" "}
+          <input type="password" name="password" placeholder="password" />
+          <br />
+          Password:{" "}
+          <input
+            type="password"
+            name="password_confirmation"
+            placeholder="confirm password"
+          />
+          <br />
+          <input type="submit" value="Submit" />
+        </form>
+        <br />
+        <div>
+          Already registered, <a href="/login">Login</a> here.
+        </div>
+      </div>
+    )
+  }
+  export default Signup
+```
+
+## logout button
+```js
+  // App.js
+  const logout = () => {
+    fetch(`${url}/logout`, {
+      headers: {
+        "Content-Type": 'application/json',
+        "Authorization": localStorage.getItem("token") //retrieve the token 
+      },
+      method: 'DELETE'
+    })
+      .then(payload => {
+        localStorage.removeItem("token")  // remove the token
+        setCurrentUser(null)
+      })
+      .catch(error => console.log("log out errors: ", error))
+  }
+```
+- pass prop
+```js
+  <Header current_user={currentUser} logout={logout} />
+```
+- add functionality to button, accept prop on header
+```js
+// Header.js
+  const handleClick = () => {
+    logout()
+    navigate("/")
+  }
+  ...
+  <NavItem>
+    <input type="button" value="Log Out" onClick={handleClick}/>
+  </NavItem>
+```
+### Logged In User
+- Having the initial state of `currentUser` set to `null` will cause the user to be logged out if the user manually refreshes the browser. To prevent this bug, add function that will set the current user to the logged in user if a token is available.
+```js
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("token")
+    if (loggedInUser) {
+      setCurrentUser(loggedInUser)
+    }
+    readApartments()
+  }, [])
+```
+
 
