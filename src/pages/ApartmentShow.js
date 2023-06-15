@@ -28,7 +28,7 @@ const ApartmentShow = ({apartments}) => {
                 {currentApt.street} {currentApt.unit},{currentApt.city}, {currentApt.state}
               </CardSubtitle>
               <CardText>
-                {currentApt.square_footage} that includes {currentApt.bedrooms} bedrooms and {currentApt.bathrooms} bathrooms going for {currentApt.price}
+                {currentApt.square_footage} square footage that includes {currentApt.bedrooms} bedrooms and {currentApt.bathrooms} bathrooms going for {currentApt.price}
               </CardText>
             </CardBody>
           </Card>
