@@ -28,6 +28,10 @@ const App = () => {
   const url = "http://localhost:3000"
 
   useEffect(() => {
+    const loggedInUser = localStorage.getItem("token")
+    if(loggedInUser) {
+      setCurrentUser(loggedInUser)
+    }
     readApts()
   }, [])
 
@@ -99,9 +103,24 @@ const App = () => {
       .catch(error => console.log("login errors: ", error))
   }
 
+  const logout = () => {
+    fetch(`${url}/logout`, {
+      headers: {
+        "Content-Type": 'application/json',
+        "Authorization": localStorage.getItem("token") //retrieve the token 
+      },
+      method: 'DELETE'
+    })
+      .then(payload => {
+        localStorage.removeItem("token")  // remove the token
+        setCurrentUser(null)
+      })
+      .catch(error => console.log("log out errors: ", error))
+  }
+
   return(
     <>
-      <Header currentUser={currentUser} />
+      <Header currentUser={currentUser} logout={logout}/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<SignUp signup={signup} />} />

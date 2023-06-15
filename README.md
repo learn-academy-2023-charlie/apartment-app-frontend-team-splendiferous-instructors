@@ -541,6 +541,7 @@ const signup = (userInfo) => {
 - add functionality to button, accept prop on header
 ```js
 // Header.js
+  const navigate = useNavigate()
   const handleClick = () => {
     logout()
     navigate("/")
@@ -555,10 +556,10 @@ const signup = (userInfo) => {
 ```js
   useEffect(() => {
     const loggedInUser = localStorage.getItem("token")
-    if (loggedInUser) {
+    if(loggedInUser) {
       setCurrentUser(loggedInUser)
     }
-    readApartments()
+    readApts()
   }, [])
 ```
 
