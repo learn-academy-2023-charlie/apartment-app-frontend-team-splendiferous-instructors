@@ -50,7 +50,7 @@ const App = () => {
           />
         )}
 
-        <Route path="/aptnew" element={<ApartmentNew createApt={createApt} />} />
+        <Route path="/aptnew" element={<ApartmentNew createApt={createApt} currentUser={currentUser} />} />
         <Route path="/aptedit" element={<ApartmentEdit />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

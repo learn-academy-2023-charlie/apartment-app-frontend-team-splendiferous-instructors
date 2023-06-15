@@ -211,17 +211,25 @@ return (
   </main>
 )
 ```
+- connect show to index button
+```js
+  <NavLink href={`/aptshow/${apt.id}`}>
+    More Details
+  </NavLink>
+```
 ## New
 - https://github.com/learn-academy-2023-charlie/syllabus/blob/main/cat-tinder/frontend/cat-create.md
-- on App.js, create function
+- On App.js, create function and pass as prop to ApartmentNew.
+- Due to the association of apartment and user, currentUser needs to be passed as a prop also.
 ```js
-const createCat = (apt) => {
+const createApt = (apt) => {
   console.log("created apartment:", apt)
 }
 ```
 - setup functional prop on ApartmentNew.js
+- setup navigation to redirect to ApartmentIndex.js on successful submission
 ```js
-const ApartmentNew = ({ createCat }) => {
+const ApartmentNew = ({ createApt, currentUser }) => {
   const [newApt, setNewApt] = useState({
     street: "",
     unit: "",
@@ -233,7 +241,7 @@ const ApartmentNew = ({ createCat }) => {
     bathrooms: "",
     pets: "",
     image: "",
-    user_id: ""
+    user_id: currentUser.id
   })
   const handleChange = (e) => {
     setNewApt({ ...newApt, [e.target.name]: e.target.value })
@@ -242,6 +250,31 @@ const ApartmentNew = ({ createCat }) => {
     createApt(newApt)
   }
 ```
+- setup form to accept user input
+```js
+  <Form>
+    <Row>
+      <Col md={6}>
+        <FormGroup>
+          <Label for="street">
+            Street
+          </Label>
+          <Input
+            id="street"
+            name="street"
+            placeholder="Enter your street info"
+            type="text"
+            onChange={handleChange}
+            value={newApt.street}
+          />
+        </FormGroup>
+      </Col>
+    </Row>
+  </Form>
+```
+- functionality on button submission  
+`<Button onClick={handleSubmit} name="submit">`
+- Confirmation will be seeing the apartment in the console.
 
 ## Protected Pages
 ## Header
@@ -249,25 +282,28 @@ const ApartmentNew = ({ createCat }) => {
 - conditional rendering: under a true condition, certain links will be available  
 `{currentUser && ()}`
 - pass user prop to Header.js
-- non-users will see: ApartmentIndex, LogIn, SignUp
-- users: ApartmentIndex, ApartmentProtectedIndex, LogOut
+- non-users (value of null) will see: ApartmentIndex, LogIn, SignUp
+- users (value of mockUser): ApartmentIndex, ApartmentNew, ApartmentProtectedIndex, LogOut
+- LogOut link will be covered through a button that will be linked to the functionality. For this structure there will not be a UI associated with a LogOut component.  
+`<input type="button" value="Log Out" />`  
+*** NOTE: if using reactstrap for NavLink need `href` attribute, react-router-dom uses tje `to` attribute ***
 ```js
 // Header.js
   <Nav className="nav">
     {currentUser && (
       <NavItem>
-        <input type="button" value='Logout' />
+        <input type="button" value="Log Out" />
       </NavItem>
     )}
     {!currentUser && (
       <>
         <NavItem>
-          <NavLink to="/login" className="nav-link">
+          <NavLink href="/login" className="nav-link">
             Log In
           </NavLink>
         </NavItem>
         <NavItem>
-          <NavLink to="/signup" className="nav-link">
+          <NavLink href="/signup" className="nav-link">
             Sign Up
           </NavLink>
         </NavItem>
@@ -284,22 +320,4 @@ const ApartmentNew = ({ createCat }) => {
   const myApartments = apartments?.filter(apartment => currentUser?.id === apartment.user_id)
 ```
 
-- will use later on edit page
-```js
-const [currentApt, setCurrentApt] = useState(
-    {
-      street: currentApt.street,
-      unit: currentApt.unit,
-      city: currentApt.city,
-      state: currentApt.state,
-      square_footage: currentApt.square_footage,
-      price: currentApt.price,
-      bedrooms: currentApt.bedrooms,
-      bathrooms: currentApt.bathrooms,
-      pets: currentApt.pets,
-      image: currentApt.image,
-      user_id: currentUser.id
-    }
-  )
-  ```
 
