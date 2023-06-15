@@ -76,12 +76,35 @@ const App = () => {
       .catch(error => console.log("login errors: ", error))
   }
 
+  const signup = (userInfo) => {
+    fetch(`${url}/signup`, {
+      body: JSON.stringify(userInfo),
+      headers: {
+        "Content-Type": 'application/json',
+        "Accept": 'application/json'
+      },
+      method: 'POST'
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw Error(response.statusText)
+        }
+        // store the token
+        localStorage.setItem("token", response.headers.get("Authorization"))
+        return response.json()
+      })
+      .then(payload => {
+        setCurrentUser(payload)
+      })
+      .catch(error => console.log("login errors: ", error))
+  }
+
   return(
     <>
       <Header currentUser={currentUser} />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/signup" element={<SignUp />} />
+        <Route path="/signup" element={<SignUp signup={signup} />} />
         <Route path="/login" element={<LogIn login={login}/>} />
         <Route path="/aptindex" element={<ApartmentIndex apartments={apartments}/>} />
         <Route path="/aptshow/:id" element={<ApartmentShow apartments={apartments}/>} />

@@ -326,6 +326,7 @@ const ApartmentNew = ({ createApt, currentUser }) => {
 - 2 servers for API and UI
 - set state variables to null/empty
 - verify proper output on browser
+- ensure that CORS is setup to receive requests from any application
 
 ### Read/Create Fetch
 ```js
@@ -473,7 +474,7 @@ const signup = (userInfo) => {
   import { useRef } from "react"
   import { useNavigate } from "react-router-dom"
 
-  const Signup = ({ signup }) => {
+  const SignUp = ({ signup }) => {
     const formRef = useRef()
     const navigate = useNavigate()
 
@@ -512,7 +513,7 @@ const signup = (userInfo) => {
       </div>
     )
   }
-  export default Signup
+  export default SignUp
 ```
 
 ## logout button
