@@ -16,7 +16,7 @@ const ApartmentNew = ({ createApt, currentUser }) => {
     bathrooms: "",
     pets: "",
     image: "",
-    user_id: currentUser.id
+    user_id: currentUser?.id
   })
 
   const handleChange = (e) => {

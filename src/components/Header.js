@@ -1,10 +1,19 @@
 // import
 import React from "react"
+import { useNavigate } from "react-router-dom"
 import headerLogo from "../assets/headerLogo.png"
 import { Navbar, NavbarBrand, Nav, NavItem, NavLink } from "reactstrap"
+
 // declare functional component
-const Header = ({currentUser}) => {
+const Header = ({currentUser, logout}) => {
   console.log("currentUser prop:", currentUser)
+
+  const navigate = useNavigate()
+  
+  const handleClick = () => {
+    logout()
+    navigate("/")
+  }
 
   return(
     <Navbar
@@ -37,7 +46,11 @@ const Header = ({currentUser}) => {
               <NavLink href="/aptnew">Add a Unit</NavLink>
             </NavItem>
             <NavItem>
-              <input type="button" value="Log Out" />
+              <input 
+                type="button" 
+                value="Log Out"
+                onClick={handleClick} 
+              />
             </NavItem>
           </>
         )}

@@ -1,8 +1,30 @@
-## Apartment App FrontEnd
+# Apartment App FrontEnd
 
-Reference: (Cat Tinder FrontEnd)[https://github.com/learn-academy-2023-charlie/syllabus/blob/main/cat-tinder/frontend/intro.md]
+## Reference: (Cat Tinder FrontEnd)[https://github.com/learn-academy-2023-charlie/syllabus/blob/main/cat-tinder/frontend/intro.md]
 
-Process:
+## Overview
+The UI will be establish through React. Routing components will be used to setup individual routes to allow an user without authentication to do the following:
+- display all available apartments 
+- log in
+- sign up  
+User who have authentication will be authorized to the following:  
+- log out
+- display all available apartments
+- display all available apartments that belong to them
+- add new apartments
+- update apartments that belong to them
+- delete apartments that belong to them 
+
+## Token based authentication  
+Before users can make a request, they have to provide the necessary log in or sign up credentials.
+Once an user is authenticated and assigned a json web token, localStorage will be used to save the user data as key:value pairs in the web browser. Any subsequent requests will be submitted to the browser to maintain the user session. Expirations will be assigned to timeout property of the token to keep your application safe from cyber attacks. 
+1. The user is authenticated through log in or sign up
+2. A token is assigned to the user session
+3. localStorage stores the user data in the web browser
+4. The user session is maintained on any subsequent request by comparing the token against what is stored in localStorage
+5. Timeout expirations will be assigned to the token to minimize the impact of cyber attacks.
+
+## Process:
 1. Github empty repo
 2. Create react app
 3. Get branch protections
@@ -217,6 +239,7 @@ return (
     More Details
   </NavLink>
 ```
+
 ## New
 - https://github.com/learn-academy-2023-charlie/syllabus/blob/main/cat-tinder/frontend/cat-create.md
 - On App.js, create function and pass as prop to ApartmentNew.
@@ -286,7 +309,7 @@ const ApartmentNew = ({ createApt, currentUser }) => {
 - users (value of mockUser): ApartmentIndex, ApartmentNew, ApartmentProtectedIndex, LogOut
 - LogOut link will be covered through a button that will be linked to the functionality. For this structure there will not be a UI associated with a LogOut component.  
 `<input type="button" value="Log Out" />`  
-*** NOTE: if using reactstrap for NavLink need `href` attribute, react-router-dom uses tje `to` attribute ***
+*** NOTE: if using reactstrap for NavLink need `href` attribute, react-router-dom uses `to` attribute ***
 ```js
 // Header.js
   <Nav className="nav">
@@ -318,6 +341,249 @@ const ApartmentNew = ({ createApt, currentUser }) => {
   // ApartmentProtectedIndex.js
 // use the filter method to create a new array of apartments belonging to the user by comparing if the primary key of the user is strictly equal to the foreign key of the apartment.
   const myApartments = apartments?.filter(apartment => currentUser?.id === apartment.user_id)
+```
+
+## CONNECTING
+
+## Read/Create functionality
+- 2 servers for API and UI
+- set state variables to null/empty
+- verify proper output on browser
+- ensure that CORS is setup to receive requests from any application
+
+### Read/Create Fetch
+```js
+// import useEffect
+// will store the url in a variable
+  const [currentUser, setCurrentUser] = useState(null)
+  const [apartments, setApartments] = useState([])
+
+  const url = "http://localhost:3000"
+
+  useEffect(() => {
+    readApts()
+  }, [])
+
+  // apartment fetches
+  const readApts = () => {
+    fetch(`${url}/apartments`)
+      .then(response => response.json())
+      .then(payload => {
+        setApartments(payload)
+      })
+      .catch((error) => console.log(error))
+  }
+
+  const createApt = (apt) => {
+    fetch(`${url}/apartments`, {
+      body: JSON.stringify(apt),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: "POST"
+    })
+      .then((response) => response.json())
+      .then((payload) => readApts())
+      .catch((errors) => console.log("Apartment create errors:", errors))
+  }
+```
+- check server
+
+## LogIn
+- 
+```js
+// App.js
+  // authentication function
+  const login = (userInfo) => {
+    fetch(`${url}/login`, {
+      body: JSON.stringify(userInfo),
+      headers: {
+        "Content-Type": 'application/json',
+        "Accept": 'application/json'
+      },
+      method: 'POST'
+    })
+      .then(response => {
+        if(!response.ok) {
+          throw Error(response.statusText)
+        }
+        // store the token
+        localStorage.setItem("token", response.headers.get("Authorization"))
+        return response.json()
+      })
+      .then(payload => {
+        setCurrentUser(payload)
+      })
+      .catch(error => console.log("login errors: ", error))
+  }
+```
+- pass prop
+```javascript
+  <Route path="/login" element={<LogIn login={login} />} />
+```
+```js
+// login.js
+// Use useRef to track DOM elements and access them in our code. With useRef, we can create a reference to our signup and login forms
+import { useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
+
+const LogIn = ({ login }) => {
+
+  const formRef = useRef()
+  const navigate = useNavigate()
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const formData = new FormData(formRef.current)
+    const data = Object.fromEntries(formData)
+    const userInfo = {
+        "user": { email: data.email, password: data.password }
+    }
+    console.log(userInfo)
+    login(userInfo)
+    navigate('/')
+    e.target.reset()
+  }
+
+  return(
+    <div>
+      <form ref={formRef} onSubmit={handleSubmit}>
+        Email: <input type="email" name='email' placeholder="email" />
+        <br/>
+        Password: <input type="password" name='password' placeholder="password" />
+        <br/>
+        <input type='submit' value="Login" />
+      </form>
+      <br />
+      <div>Not registered yet, <a href="/signup">Signup</a> </div>
+    </div>
+  )
+}
+export default Login
+```
+
+## Sign Up
+```js
+// App.js
+const signup = (userInfo) => {
+  fetch(`${url}/signup`, {
+    body: JSON.stringify(userInfo),
+    headers: {
+      "Content-Type": 'application/json',
+      "Accept": 'application/json'
+    },
+    method: 'POST'
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw Error(response.statusText)
+      }
+      // store the token
+      localStorage.setItem("token", response.headers.get("Authorization"))
+      return response.json()
+    })
+    .then(payload => {
+      setCurrentUser(payload)
+    })
+    .catch(error => console.log("login errors: ", error))
+}
+```
+- pass prop
+```js
+  <Route path="/signup" element={<SignUp signup={signup}/>} />
+```
+```js
+  // signup
+  import { useRef } from "react"
+  import { useNavigate } from "react-router-dom"
+
+  const SignUp = ({ signup }) => {
+    const formRef = useRef()
+    const navigate = useNavigate()
+
+    const handleSubmit = (e) => {
+      e.preventDefault()
+      const formData = new FormData(formRef.current)
+      const data = Object.fromEntries(formData)
+      const userInfo = {
+        user: { email: data.email, password: data.password },
+      }
+      signup(userInfo)
+      navigate("/")
+      e.target.reset()
+    }
+    return (
+      <div>
+        <form ref={formRef} onSubmit={handleSubmit}>
+          Email: <input type="email" name="email" placeholder="email" />
+          <br />
+          Password:{" "}
+          <input type="password" name="password" placeholder="password" />
+          <br />
+          Password:{" "}
+          <input
+            type="password"
+            name="password_confirmation"
+            placeholder="confirm password"
+          />
+          <br />
+          <input type="submit" value="Submit" />
+        </form>
+        <br />
+        <div>
+          Already registered, <a href="/login">Login</a> here.
+        </div>
+      </div>
+    )
+  }
+  export default SignUp
+```
+
+## logout button
+```js
+  // App.js
+  const logout = () => {
+    fetch(`${url}/logout`, {
+      headers: {
+        "Content-Type": 'application/json',
+        "Authorization": localStorage.getItem("token") //retrieve the token 
+      },
+      method: 'DELETE'
+    })
+      .then(payload => {
+        localStorage.removeItem("token")  // remove the token
+        setCurrentUser(null)
+      })
+      .catch(error => console.log("log out errors: ", error))
+  }
+```
+- pass prop
+```js
+  <Header current_user={currentUser} logout={logout} />
+```
+- add functionality to button, accept prop on header
+```js
+// Header.js
+  const navigate = useNavigate()
+  const handleClick = () => {
+    logout()
+    navigate("/")
+  }
+  ...
+  <NavItem>
+    <input type="button" value="Log Out" onClick={handleClick}/>
+  </NavItem>
+```
+### Logged In User
+- Having the initial state of `currentUser` set to `null` will cause the user to be logged out if the user manually refreshes the browser. To prevent this bug, add function that will set the current user to the logged in user if a token is available.
+```js
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("token")
+    if(loggedInUser) {
+      setCurrentUser(loggedInUser)
+    }
+    readApts()
+  }, [])
 ```
 
 
