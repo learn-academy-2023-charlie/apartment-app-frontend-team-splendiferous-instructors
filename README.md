@@ -1,8 +1,30 @@
-## Apartment App FrontEnd
+# Apartment App FrontEnd
 
-Reference: (Cat Tinder FrontEnd)[https://github.com/learn-academy-2023-charlie/syllabus/blob/main/cat-tinder/frontend/intro.md]
+## Reference: (Cat Tinder FrontEnd)[https://github.com/learn-academy-2023-charlie/syllabus/blob/main/cat-tinder/frontend/intro.md]
 
-Process:
+## Overview
+The UI will be establish through React. Routing components will be used to setup individual routes to allow an user without authentication to do the following:
+- display all available apartments 
+- log in
+- sign up  
+User who have authentication will be authorized to the following:  
+- log out
+- display all available apartments
+- display all available apartments that belong to them
+- add new apartments
+- update apartments that belong to them
+- delete apartments that belong to them 
+
+## Token based authentication  
+Before users can make a request, they have to provide the necessary log in or sign up credentials.
+Once an user is authenticated and assigned a json web token, localStorage will be used to save the user data as key:value pairs in the web browser. Any subsequent requests will be submitted to the browser to maintain the user session. Expirations will be assigned to timeout property of the token to keep your application safe from cyber attacks. 
+1. The user is authenticated through log in or sign up
+2. A token is assigned to the user session
+3. localStorage stores the user data in the web browser
+4. The user session is maintained on any subsequent request by comparing the token against what is stored in localStorage
+5. Timeout expirations will be assigned to the token to minimize the impact of cyber attacks.
+
+## Process:
 1. Github empty repo
 2. Create react app
 3. Get branch protections
@@ -217,6 +239,7 @@ return (
     More Details
   </NavLink>
 ```
+
 ## New
 - https://github.com/learn-academy-2023-charlie/syllabus/blob/main/cat-tinder/frontend/cat-create.md
 - On App.js, create function and pass as prop to ApartmentNew.
@@ -286,7 +309,7 @@ const ApartmentNew = ({ createApt, currentUser }) => {
 - users (value of mockUser): ApartmentIndex, ApartmentNew, ApartmentProtectedIndex, LogOut
 - LogOut link will be covered through a button that will be linked to the functionality. For this structure there will not be a UI associated with a LogOut component.  
 `<input type="button" value="Log Out" />`  
-*** NOTE: if using reactstrap for NavLink need `href` attribute, react-router-dom uses tje `to` attribute ***
+*** NOTE: if using reactstrap for NavLink need `href` attribute, react-router-dom uses `to` attribute ***
 ```js
 // Header.js
   <Nav className="nav">
