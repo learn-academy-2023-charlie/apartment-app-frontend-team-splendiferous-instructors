@@ -3,9 +3,11 @@ import React from "react"
 import { useParams } from "react-router-dom"
 import { Card, CardImg, CardBody, CardTitle, CardSubtitle, CardText } from "reactstrap"
 // declare functional component
-const ApartmentShow = ({apartments}) => {
+const ApartmentShow = ({apartments, currentUser}) => {
   const { id } = useParams()
   let currentApt = apartments?.find((apt) => apt.id === +id)
+  console.log(currentApt, currentUser)
+  
   return(
     <main>
       {currentApt && (

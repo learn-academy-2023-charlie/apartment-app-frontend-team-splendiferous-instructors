@@ -126,7 +126,7 @@ const App = () => {
         <Route path="/signup" element={<SignUp signup={signup} />} />
         <Route path="/login" element={<LogIn login={login}/>} />
         <Route path="/aptindex" element={<ApartmentIndex apartments={apartments}/>} />
-        <Route path="/aptshow/:id" element={<ApartmentShow apartments={apartments}/>} />
+        <Route path="/aptshow/:id" element={<ApartmentShow apartments={apartments} currentUser={currentUser}/>} />
         {currentUser && (
           <Route 
             path="/myapts" 

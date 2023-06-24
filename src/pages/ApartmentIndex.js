@@ -3,6 +3,7 @@ import React from "react"
 import { Card, CardGroup, CardImg, CardBody, CardTitle, Button, NavLink } from "reactstrap"
 // declare functional component
 const ApartmentIndex = ({apartments}) => {
+  console.log(apartments)
   return(
     <>
       <CardGroup>
