@@ -586,4 +586,21 @@ const signup = (userInfo) => {
   }, [])
 ```
 
+## Decoding JWT for the foreign key
+- Reference: https://thinkster.io/tutorials/angularjs-jwt-auth/decoding-jwt-payloads
 
+- Since the token replaces the user object, its primary key assigned by rails is hidden. The payload of the json web token will need to be decoded.
+
+```js
+// the token payload is a base64 encoded JSON object that sits between the two periods in the token, split() to isolate the payload
+const userPayload = currentUser?.split(".")[1]
+// replace any characters with a / 
+const baseURL = userPayload.replace('-', '+').replace('_', '/')
+// atob() to decode the payload to a JSON string and JSON.parse() to parse the string into an object
+const authUser = JSON.parse(atob(baseURL))
+
+// use urnary operator to convert string to number
++authUser?.sub
+```
+
+- This decoding will be needed to assign foreign keys to apartments when creating as well as filtering for the foreign key when updating and providing a protected index.

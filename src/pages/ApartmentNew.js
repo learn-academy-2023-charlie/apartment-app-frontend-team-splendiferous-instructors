@@ -4,6 +4,10 @@ import { useNavigate } from "react-router-dom"
 import { Form, Row, Col, FormGroup, Label, Input, Button } from "reactstrap"
 // declare functional component
 const ApartmentNew = ({ createApt, currentUser }) => {
+  
+  const userPayload = currentUser?.split(".")[1]
+  const baseURL = userPayload.replace('-', '+').replace('_', '/')
+  const authUser = JSON.parse(atob(baseURL))
 
   const [newApt, setNewApt] = useState({
     street: "",
@@ -16,7 +20,7 @@ const ApartmentNew = ({ createApt, currentUser }) => {
     bathrooms: "",
     pets: "",
     image: "",
-    user_id: currentUser?.id
+    user_id: +authUser?.sub
   })
 
   const handleChange = (e) => {
@@ -24,7 +28,8 @@ const ApartmentNew = ({ createApt, currentUser }) => {
   }
 
   const navigate = useNavigate()
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault()
     createApt(newApt)
     navigate("/aptindex")
   }  
