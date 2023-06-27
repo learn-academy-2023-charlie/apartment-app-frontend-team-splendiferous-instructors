@@ -599,8 +599,52 @@ const baseURL = userPayload.replace('-', '+').replace('_', '/')
 // atob() to decode the payload to a JSON string and JSON.parse() to parse the string into an object
 const authUser = JSON.parse(atob(baseURL))
 
-// use urnary operator to convert string to number
+// use unary operator to convert string to number
 +authUser?.sub
 ```
 
 - This decoding will be needed to assign foreign keys to apartments when creating as well as filtering for the foreign key when updating and providing a protected index.
+
+## Error: Failed to execute atob on Window
+- Kept receiving error that the string to be decoded is not correctly encoded
+- Fix: 
+  - Decoded the jwt on the useEffect()
+  - Reassign the value of currentUser to an object that stores the user id
+```js
+  useEffect(() => {
+    // grab token
+    const loggedInUser = localStorage.getItem("token")
+    // decode user primary key from the jwt payload and change datatype to number
+    const authUserId = +JSON.parse(atob(loggedInUser?.split(".")[1])).sub
+    // if true then reassign value of currentUser to object containing primary key
+    if(loggedInUser) {
+      setCurrentUser({ id: authUserId})
+    }
+    // read fetch call
+    readApts()
+  }, [])
+```
+
+## Error: currentUser state not maintaining for foreign key
+- Kept receiving undefined when assigning the value of the the currentUser's primary key to the foreign key of the new apartment
+- Fix: 
+  - The value could be seen on the UI. Therefore, place as default value for the foreign key in the form.
+  - Hide the form label and input to prevent the user from changing the value.
+```js
+  <FormGroup>
+    // hide label 
+    <Label for="user_id" hidden>
+      User Id
+    </Label>
+    <Input
+      id="user_id"
+      name="user_id"
+      onChange={handleChange}
+      // assign the value of the currentUser primary key as the foreign key of the newApt
+      value={newApt.user_id = currentUser?.id}
+      // hide the input
+      type="hidden"
+    />
+  </FormGroup>
+```
+
