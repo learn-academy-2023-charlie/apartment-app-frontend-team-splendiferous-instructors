@@ -28,12 +28,13 @@ const App = () => {
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem("token")
-    const authUserId = +JSON.parse(atob(loggedInUser?.split(".")[1])).sub
     if(loggedInUser) {
+      const authUserId = +JSON.parse(atob(loggedInUser?.split(".")[1])).sub
       setCurrentUser({ id: authUserId})
     }
     readApts()
   }, [])
+
 
   const readApts = () => {
     fetch(`${url}/apartments`)
@@ -123,22 +124,45 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<SignUp signup={signup} />} />
         <Route path="/login" element={<LogIn login={login}/>} />
-        <Route path="/aptindex" element={<ApartmentIndex apartments={apartments}/>} />
-        <Route path="/aptshow/:id" element={<ApartmentShow apartments={apartments} currentUser={currentUser}/>} />
+        <Route 
+          path="/aptindex" 
+          element={<ApartmentIndex apartments={apartments}/>} 
+        />
+        <Route 
+          path="/aptshow/:id" 
+          element={
+            <ApartmentShow 
+              apartments={apartments} 
+              currentUser={currentUser}
+            />
+          } 
+        />
         {currentUser && (
-          <Route 
-            path="/myapts" 
-            element={
-              <ApartmentProtectedIndex 
-                currentUser={currentUser}
-                apartments={apartments}
-              />
-            } 
-          />
+          <>
+            <Route 
+              path="/myapts" 
+              element={
+                <ApartmentProtectedIndex 
+                  currentUser={currentUser}
+                  apartments={apartments}
+                />
+              } 
+            />
+            <Route 
+              path="/aptnew" 
+              element={
+                <ApartmentNew 
+                  createApt={createApt} 
+                  currentUser={currentUser} 
+                />
+              } 
+            />
+            <Route 
+              path="/aptedit" 
+              element={<ApartmentEdit />} 
+            />
+          </>
         )}
-
-        <Route path="/aptnew" element={<ApartmentNew createApt={createApt} currentUser={currentUser} />} />
-        <Route path="/aptedit" element={<ApartmentEdit />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
