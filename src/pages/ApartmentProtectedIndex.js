@@ -4,14 +4,8 @@ import { Card, CardGroup, CardImg, CardBody, CardTitle, Button, NavLink } from "
 
 // declare functional component
 const ApartmentProtectedIndex = ({currentUser, apartments}) => {
-  
-  const userPayload = currentUser?.split(".")[1]
-  // replace any characters with a / 
-  const baseURL = userPayload.replace('-', '+').replace('_', '/')
-  // atob() to decode the payload to a JSON string and JSON.parse() to parse the string into an object
-  const authUser = JSON.parse(atob(baseURL))
 
-  const myApartments = apartments?.filter(apartment => +authUser?.sub === apartment.user_id)
+  const myApartments = apartments?.filter(apartment => currentUser?.id === apartment.user_id)
 
   return(
     <>

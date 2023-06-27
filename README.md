@@ -648,3 +648,7 @@ const authUser = JSON.parse(atob(baseURL))
   </FormGroup>
 ```
 
+## Error: Log in stating atob not working on window
+- After logging out and attempting to log back in, received error messages about atob method. 
+- Fix:
+  - Move the method into the conditional on the useEffect to clear error.
