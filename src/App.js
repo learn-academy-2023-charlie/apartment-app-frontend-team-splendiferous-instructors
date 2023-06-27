@@ -19,7 +19,6 @@ import ApartmentShow from "./pages/ApartmentShow"
 import Home from "./pages/Home"
 import NotFound from "./pages/NotFound"
 
-// declare functional component
 const App = () => {
   
   const [currentUser, setCurrentUser] = useState(null)
@@ -29,8 +28,9 @@ const App = () => {
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem("token")
+    const authUserId = +JSON.parse(atob(loggedInUser?.split(".")[1])).sub
     if(loggedInUser) {
-      setCurrentUser(loggedInUser)
+      setCurrentUser({ id: authUserId})
     }
     readApts()
   }, [])
@@ -70,7 +70,6 @@ const App = () => {
         if(!response.ok) {
           throw Error(response.statusText)
         }
-        // store the token
         localStorage.setItem("token", response.headers.get("Authorization"))
         return response.json()
       })
@@ -93,7 +92,6 @@ const App = () => {
         if (!response.ok) {
           throw Error(response.statusText)
         }
-        // store the token
         localStorage.setItem("token", response.headers.get("Authorization"))
         return response.json()
       })
@@ -107,12 +105,12 @@ const App = () => {
     fetch(`${url}/logout`, {
       headers: {
         "Content-Type": 'application/json',
-        "Authorization": localStorage.getItem("token") //retrieve the token 
+        "Authorization": localStorage.getItem("token")
       },
       method: 'DELETE'
     })
       .then(payload => {
-        localStorage.removeItem("token")  // remove the token
+        localStorage.removeItem("token")
         setCurrentUser(null)
       })
       .catch(error => console.log("log out errors: ", error))
@@ -147,5 +145,4 @@ const App = () => {
     </>
   )
 }
-// export
 export default App

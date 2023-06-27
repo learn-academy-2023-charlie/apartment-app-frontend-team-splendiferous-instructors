@@ -1,13 +1,8 @@
-// import
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Form, Row, Col, FormGroup, Label, Input, Button } from "reactstrap"
-// declare functional component
+
 const ApartmentNew = ({ createApt, currentUser }) => {
-  
-  const userPayload = currentUser?.split(".")[1]
-  const baseURL = userPayload.replace('-', '+').replace('_', '/')
-  const authUser = JSON.parse(atob(baseURL))
 
   const [newApt, setNewApt] = useState({
     street: "",
@@ -20,7 +15,7 @@ const ApartmentNew = ({ createApt, currentUser }) => {
     bathrooms: "",
     pets: "",
     image: "",
-    user_id: +authUser?.sub
+    user_id: ""
   })
 
   const handleChange = (e) => {
@@ -62,7 +57,7 @@ const ApartmentNew = ({ createApt, currentUser }) => {
         <Col md={6}>
           <FormGroup>
             <Label for="unit">
-              Unit number
+              Unit
             </Label>
             <Input
               id="unit"
@@ -126,7 +121,7 @@ const ApartmentNew = ({ createApt, currentUser }) => {
         <Col md={6}>
           <FormGroup>
             <Label for="price">
-              price
+              Price
             </Label>
             <Input
               id="price"
@@ -198,6 +193,18 @@ const ApartmentNew = ({ createApt, currentUser }) => {
           value={newApt.image}
         />
       </FormGroup>
+      <FormGroup>
+        <Label for="user_id" hidden>
+          User Id
+        </Label>
+        <Input
+          id="user_id"
+          name="user_id"
+          onChange={handleChange}
+          value={newApt.user_id = currentUser?.id}
+          type="hidden"
+        />
+      </FormGroup>
       <Button onClick={handleSubmit} name="submit">
         Submit
       </Button>
@@ -205,5 +212,5 @@ const ApartmentNew = ({ createApt, currentUser }) => {
     </div>
   )
 }
-// export
+
 export default ApartmentNew
