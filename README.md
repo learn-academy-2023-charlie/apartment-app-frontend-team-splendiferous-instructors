@@ -663,3 +663,10 @@ const authUser = JSON.parse(atob(baseURL))
   - find the apartment with a matching id
   - assign that apartment as the initial value for the apartments to be editted
   - pass the primary key of the currentUser to the form
+
+## Destroy
+- App.js:
+  - fetch on delete function
+  - pass as prop to ProtectedApartmentIndex 
+  - route back to ApartmentIndex upon successful deletion
+  

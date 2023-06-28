@@ -1,9 +1,7 @@
-// import
 import React from "react"
 import { Card, CardGroup, CardImg, CardBody, CardTitle, Button, NavLink } from "reactstrap"
 
-// declare functional component
-const ApartmentProtectedIndex = ({currentUser, apartments}) => {
+const ApartmentProtectedIndex = ({currentUser, apartments, deleteApt}) => {
 
   const myApartments = apartments?.filter(apartment => currentUser?.id === apartment.user_id)
 
@@ -33,7 +31,7 @@ const ApartmentProtectedIndex = ({currentUser, apartments}) => {
                     Edit Apartment Details
                   </NavLink>
                 </Button>
-                <Button>
+                <Button onClick={()=>deleteApt(apt.id)}>
                   Delete
                 </Button>
               </CardBody>
@@ -44,5 +42,5 @@ const ApartmentProtectedIndex = ({currentUser, apartments}) => {
     </>
   )
 }
-// export
+
 export default ApartmentProtectedIndex

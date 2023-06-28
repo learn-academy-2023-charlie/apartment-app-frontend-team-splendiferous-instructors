@@ -73,6 +73,18 @@ const App = () => {
       .catch((errors) => console.log("Apartment update errors:", errors))
   }
 
+  const deleteApt = (id) => {
+    fetch(`${url}/apartments/${id}`, {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: "DELETE"
+    })
+      .then((response) => response.json())
+      .then((payload) => readApts())
+      .catch((errors) => console.log("Apartment delete errors:", errors))
+  }
+
   const login = (userInfo) => {
     fetch(`${url}/login`, {
       body: JSON.stringify(userInfo),
@@ -160,6 +172,7 @@ const App = () => {
                 <ApartmentProtectedIndex 
                   currentUser={currentUser}
                   apartments={apartments}
+                  deleteApt={deleteApt}
                 />
               } 
             />
