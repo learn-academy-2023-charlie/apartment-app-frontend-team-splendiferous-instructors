@@ -28,9 +28,10 @@ const App = () => {
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem("token")
+    console.log("token", loggedInUser)
     if(loggedInUser) {
       const authUserId = +JSON.parse(atob(loggedInUser?.split(".")[1])).sub
-      setCurrentUser({ id: authUserId})
+      setCurrentUser({ id: authUserId })
     }
     readApts()
   }, [])
@@ -56,6 +57,20 @@ const App = () => {
       .then((response) => response.json())
       .then((payload) => readApts())
       .catch((errors) => console.log("Apartment create errors:", errors))
+  }
+
+  const updateApt = (apt, id) => {
+    console.log("update", apt, id)
+    fetch(`${url}/apartments/${id}`, {
+      body: JSON.stringify(apt),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: "PATCH"
+    })
+      .then((response) => response.json())
+      .then((payload) => readApts())
+      .catch((errors) => console.log("Apartment update errors:", errors))
   }
 
   const login = (userInfo) => {
@@ -158,8 +173,14 @@ const App = () => {
               } 
             />
             <Route 
-              path="/aptedit" 
-              element={<ApartmentEdit />} 
+              path="/aptedit/:id" 
+              element={
+                <ApartmentEdit 
+                  updateApt={updateApt} 
+                  apartments={apartments}
+                  currentUser={currentUser}
+                />
+              } 
             />
           </>
         )}
