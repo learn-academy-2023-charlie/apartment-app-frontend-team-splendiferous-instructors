@@ -652,3 +652,14 @@ const authUser = JSON.parse(atob(baseURL))
 - After logging out and attempting to log back in, received error messages about atob method. 
 - Fix:
   - Move the method into the conditional on the useEffect to clear error.
+
+## Update
+- App.js:
+  - fetch on update function
+  - modify Edit path to have a param
+  - pass props: update, apartments, currentUser
+- Edit page:
+  - useParams to grab id
+  - find the apartment with a matching id
+  - assign that apartment as the initial value for the apartments to be editted
+  - pass the primary key of the currentUser to the form

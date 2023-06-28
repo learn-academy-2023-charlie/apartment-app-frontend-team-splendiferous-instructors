@@ -29,7 +29,9 @@ const ApartmentProtectedIndex = ({currentUser, apartments}) => {
                   </NavLink>
                 </Button>
                 <Button>
-                  Edit
+                  <NavLink href={`/aptedit/${apt.id}`} className="nav-link">
+                    Edit Apartment Details
+                  </NavLink>
                 </Button>
                 <Button>
                   Delete
