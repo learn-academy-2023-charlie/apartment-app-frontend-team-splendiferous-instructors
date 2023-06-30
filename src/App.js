@@ -24,7 +24,7 @@ const App = () => {
   const [currentUser, setCurrentUser] = useState(null)
   const [apartments, setApartments] = useState([])
 
-  const url = "http://localhost:3000"
+  const url = "https://splendiferous.onrender.com"
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem("token")
