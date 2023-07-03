@@ -14,9 +14,10 @@ describe("<App />", () => {
   it('renders without crashing', () => {})
 
   // testing an element of the UI
-  it('renders home link on logo', () => {
+  it('renders home link on logo in header', () => {
     // debugging tool
-    screen.logTestingPlaygroundURL()
+    // screen.logTestingPlaygroundURL()
+    screen.debug()
     // query
     const linkElement = screen.getByRole('link', {
       name: /vacancy 4 currency/i
@@ -25,4 +26,17 @@ describe("<App />", () => {
     expect(linkElement).toBeInTheDocument()
     expect(linkElement).toHaveTextContent("Vacancy 4 Currency")
   })
+
+  it('renders home link on logo in footer', () => {
+    // debugging tool
+    // screen.logTestingPlaygroundURL()
+    screen.debug()
+    // query
+    const footElement = screen.getByRole('link', {
+      name: /splendiferous/i
+    })
+    // assertion
+    expect(footElement).toBeInTheDocument()
+    expect(footElement).toHaveTextContent("Splendiferous")
+  })  
 })

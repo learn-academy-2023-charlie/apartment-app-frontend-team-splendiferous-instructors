@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<LogIn /> renders a password field on the form 1`] = `
+<input
+  name="password"
+  placeholder="password"
+  type="password"
+/>
+`;

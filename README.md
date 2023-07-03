@@ -670,3 +670,30 @@ const authUser = JSON.parse(atob(baseURL))
   - pass as prop to ProtectedApartmentIndex 
   - route back to ApartmentIndex upon successful deletion
   
+## RTL
+
+### test coverage
+- $ `yarn test --coverage --watchAll=false`
+  - Percentage coverage for frontend can be found on `All files % Stmts`
+  - Statement coverage: Has each statement in the program been executed?
+  - Branch coverage: Has each branch of each control structure (such as in if/else case statements) been executed?
+  - Function coverage: Has each function (or subroutine) in the program been called?
+  - Line coverage: Has each executable line in the source file been executed?
+
+### Snapshot testing
+- Reference: https://circleci.com/blog/snapshot-testing-with-jest/
+- `Advice from Kent C. Dodds: “avoid huge snapshots and take smaller, more focused ones.`
+- .toMatchSnapshot() creates a snapshot if it does not exist, saves it to a new folder called __snapshots__ with the test file name with a extension of `.snap`, and checks if a snapshot is consistent with the DOM element designated in the query
+- If changes are made to react component file, the existing snapshot will need to be updated if the change is intentional: select the u option to update the snapshot. If change is not intentional, then change the code on the react component file.
+
+
+mockApts.forEach(apt => {
+  const aptImage = screen.getByRole('heading', {
+  name: `located in ${apt.state}`
+})
+  expect(aptImage).toBeInTheDocument()
+})
+
+screen.getByRole('heading', {
+  name: /located in pacific ocean/i
+})
