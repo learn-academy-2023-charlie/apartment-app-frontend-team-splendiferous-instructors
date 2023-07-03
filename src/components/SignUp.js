@@ -29,7 +29,7 @@ const SignUp = ({ signup }) => {
           Password:{" "}
           <input type="password" name="password" placeholder="password" />
           <br />
-          Password:{" "}
+          Confirm Password:{" "}
           <input
             type="password"
             name="password_confirmation"
